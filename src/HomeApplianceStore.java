@@ -68,17 +68,23 @@ public class HomeApplianceStore{
         DeviceStatus();
     }
 
-    public static void DeviceStatus(){
+    public static void DeviceStatus() {
 
-        DeviceBasic Fridge = new Fridge("Bosch" , "HT/52" , "Fridge" , 223 , 332 , 234 ,523 );
+        // Creating Device.
+        Device Fridge = new Fridge("Bosch", "HT/52", "Fridge", 223, 332, 234, 523);
+        DeviceBasic Device = Fridge;  /* Upcast : Success */
 
-            if(Fridge instanceof DeviceBasic){
-                ((DeviceBasic)Fridge).PowerOn(); // Turning On Device.
-                System.out.printf("Device Status: "); // Display Status
-                if(((DeviceBasic)Fridge).Status()) System.out.printf("Online"); else System.out.printf("Offline");
-            }
-            else{
-                System.out.println("ERR: ..."); return;
+
+        if (Fridge instanceof Device) {
+
+            Device Fridge2 = (Device) Device; /* Downcast */
+
+            System.out.printf("Device is Currenly: ");
+            if(((Device) Fridge2).Status() == true) System.out.printf("Online");
+            else System.out.printf("Offline");
+
+            
+
             }
         }
 }
