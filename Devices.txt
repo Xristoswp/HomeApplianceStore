@@ -1,0 +1,4 @@
+Fridge 4
+WashingMachine 4
+AirCondition 2
+Oven 8

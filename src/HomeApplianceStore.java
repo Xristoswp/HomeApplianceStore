@@ -1,93 +1,82 @@
-
-interface DeviceBasic{
-
-    void PowerOn();
-    void PowerOff();
-    int PeriodicMantainance();
-    boolean Status();
-
-    // Signature
-    void SetDesigner(String Designer);
-    void SetDeviceName(String DeviceName);
-    void SetType(String Type);
-    void SetLength(int Length);
-    void SetHeight(int Height);
-    void SetDepth(int Depth);
-    void SetConsume(int Consume);
-    String GetDesigner();
-    String GetDeviceName();
-    String GetType();
-    int GetLength();
-    int GetHeight();
-    int GetDepth();
-    int GetConsume();
-
-    void DisplayDetails();
-}
-
-abstract class Device implements DeviceBasic{
-
-    // Common Variables in other Classes.
-    public static String Designer;
-    public static String DeviceName;
-    public static String Type;
-    public static  int Length;
-    public static  int Height;
-    public static int Depth;
-    public static int Consume;
-
-
-    // Common Methods Between Classes
-    // Basic Setters - Getters.
-    public abstract void SetDesigner(String Designer);
-    public abstract void SetDeviceName(String DeviceName);
-    public abstract void SetType(String Type);
-    public abstract void SetLength(int Length);
-    public abstract void SetHeight(int Height);
-    public abstract void SetDepth(int Depth);
-    public abstract void SetConsume(int Consume);
-    // Getters
-    public abstract String GetDesigner();
-    public abstract String GetDeviceName();
-    public abstract String GetType();
-    public abstract int GetLength();
-    public abstract int GetHeight();
-    public abstract int GetDepth();
-    public abstract int GetConsume();
-
-    // Controls Status of Device.
-    public static boolean status;
-
-
-    public abstract void DisplayDetails(); // Display Details of Device
-}
+import java.io.*;
 
 
 public class HomeApplianceStore{
     public static void main(String[] args) {
-        DeviceStatus();
+    // Filename Devices.txt
+        String filename = "Devices.txt";
+    /*--------------------------------*/
+    // Creating Array of Objects
+    Fridge FridgeArray[] = new Fridge[readFile(filename , "Fridge")];
+    Oven OvenArray[] = new Oven[readFile(filename , "Oven")];
+    WashingMachine WashingMachineArray[] = new WashingMachine[readFile(filename , "WashingMachine")];
+    AirCondition AirConditionArray[] = new AirCondition[readFile(filename , "AirCondition")];
+
+    // Saving Objects to Array.
+    for(int i=0; i<FridgeArray.length; i++){
+        FridgeArray[i] = new Fridge("Test" , "Test" , "Fridge" , 5 , 5, 5, 5);
+    }
+    for(int i=0; i<OvenArray.length; i++){
+            OvenArray[i] = new Oven("Test" , "Test" , "Oven" , 5 , 5, 5, 5);
+    }
+    for(int i=0; i<WashingMachineArray.length; i++){
+            WashingMachineArray[i] = new WashingMachine("Test" , "Test" , "WashingMachine" , 5 , 5, 5, 5);
+    }
+    for(int i=0; i<AirConditionArray.length; i++){
+            AirConditionArray[i] = new AirCondition("Test" , "Test" , "AirCondition" , 5 , 5, 5, 5);
     }
 
-    public static void DeviceStatus() {
+    // Display Number of Devices
+    System.out.println(Fridge.Devices());
+    System.out.println(Oven.Devices());
+    System.out.println(WashingMachine.Devices());
+    System.out.println(AirCondition.Devices());
 
-        // Creating Device.
-        Device div = new Fridge("Bosch", "HT/52", "Fridge", 223, 332, 234, 523);
+    //Write Object To File.
+    WriteObjectsToFile(FridgeArray , OvenArray , WashingMachineArray , AirConditionArray );
+}
 
-        // Casting Objects
-        // Upcast not Used.
+    static int readFile(String Filename , String Device){
 
-        // Downcast:
-        if (div instanceof Fridge) {
-
-            Fridge fridge = (Fridge) div; // Downcasting
-
-            // Device Status:
-            System.out.printf("Device is Currenly: ");
-            if(((Device) fridge).Status() == true) System.out.printf("Online");
-            else System.out.printf("Offline");
-
-            /*To Turn(On) Device Add: fridge.PowerOn() below Downcasting. */
-            }
+        String s;
+           try {
+               BufferedReader br = new BufferedReader(new FileReader(Filename));
+               while ((s = br.readLine()) != null) { // While the EOF
+                   String[] st = s.split(" "); // Array for Holding each Word per Block. Split Words with ' '.
+                   String Div = st[0]; // Type of Device.
+                   String id = st[1]; // Numbers of Device.
+                   // Finding Our Device.
+                    if(Div.equals(Device)){
+                        return Integer.parseInt(st[1]);
+                    }
+               }
+           }
+        catch(Exception e){
+            System.out.println("Error Corrupted.");
         }
+
+        System.out.println("Device: " + Device + " Was not Found\n");
+        return 0;
+    }
+
+    public static void WriteObjectsToFile(Object FridgeArray[] , Object OvenArray[] , Object WashingMachineArray[] , Object AirConditionArray[] ){
+
+        // Serialization
+        try{
+            FileOutputStream fileOut = new FileOutputStream("Objects.txt");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+
+            // Writting Object to File
+            out.writeObject(FridgeArray);
+            out.writeObject(OvenArray);
+            out.writeObject(WashingMachineArray);
+            out.writeObject(AirConditionArray);
+            out.close();
+
+        }
+        catch (IOException ex){
+            System.out.println("IOException is caught");
+        }
+    }
 }
 
