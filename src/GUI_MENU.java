@@ -59,7 +59,7 @@ public class GUI_MENU extends JFrame {
     private class thehandler implements ActionListener{
         public void actionPerformed(ActionEvent event){
             String string = "";
-            String msg = "";
+
 
             int Fridges = 0;
             int WashingMachines = 0;
@@ -67,14 +67,19 @@ public class GUI_MENU extends JFrame {
             int AirConditions = 0;
 
             // Storing Amount of Devices in Variables from jTextField
-            string = ITEM1.getText();
-            Fridges = Integer.parseInt(string);
-            string = ITEM2.getText();
-            WashingMachines = Integer.parseInt(string);
-            string = ITEM3.getText();
-            Ovens = Integer.parseInt(string);
-            string = ITEM4.getText();
-            AirConditions = Integer.parseInt(string);
+            try {
+                string = ITEM1.getText();
+                Fridges = Integer.parseInt(string);
+                string = ITEM2.getText();
+                WashingMachines = Integer.parseInt(string);
+                string = ITEM3.getText();
+                Ovens = Integer.parseInt(string);
+                string = ITEM4.getText();
+                AirConditions = Integer.parseInt(string);
+            } catch (Exception e){
+                System.out.println("Error: Closing");
+                return;
+            }
 
             // Creating Object Arrays
             Fridge FridgeArray[] = new Fridge[Fridges];
@@ -84,10 +89,9 @@ public class GUI_MENU extends JFrame {
 
 
             if(event.getSource() == reg){
-                msg = String.format("DEVICES CREATED SUCCESSFULLY!\n\nFridges: %d\nWashingMachines: %d\nOvens: %d\nAirCondition: %d" , Fridges , WashingMachines , Ovens , AirConditions);
-                JOptionPane.showMessageDialog(null , msg);
 
                 // Saving Objects to Array.
+
                 for(int i=0; i<FridgeArray.length; i++){
                     FridgeArray[i] = new Fridge("Test" , "Test" , "Fridge" , 5 , 5, 5, 5);
                 }
@@ -101,19 +105,15 @@ public class GUI_MENU extends JFrame {
                     AirConditionArray[i] = new AirCondition("Test" , "Test" , "AirCondition" , 5 , 5, 5, 5);
                 }
 
-                System.out.println("Devices Created and Saved to Arrays Successfully!");
-
+                    System.out.println("Devices Created and Saved to Arrays Successfully!");
+                    JFrame f = new JFrame("Devices Created");
+                    JTextArea area = new JTextArea(Fridge.Devices() + "\n" + WashingMachine.Devices() + "\n" + Oven.Devices() + "\n" + AirCondition.Devices());
+                    area.setBounds(10 , 30 , 200 , 200);
+                    f.add(area);
+                    f.setSize(300 , 300);
+                    f.setVisible(true);
 
             }
-
-            JFrame f = new JFrame("Devices Created");
-            JTextArea area = new JTextArea(Fridge.Devices() + "\n" + WashingMachine.Devices() + "\n" + Oven.Devices() + "\n" + AirCondition.Devices());
-            area.setBounds(10 , 30 , 200 , 200);
-            f.add(area);
-            f.setSize(300 , 300);
-            f.setLayout(null);
-            f.setVisible(true);
-
 
         }
 
